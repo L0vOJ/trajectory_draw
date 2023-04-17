@@ -55,6 +55,8 @@ TurtleFrame::TurtleFrame(QWidget* parent, Qt::WindowFlags f)
 
   srand(time(NULL));
 
+  
+
   update_timer_ = new QTimer(this);
   update_timer_->setInterval(16);
   update_timer_->start();
@@ -239,12 +241,27 @@ void TurtleFrame::paintEvent(QPaintEvent*)
 
   painter.drawImage(QPoint(0, 0), path_image_);
   painter.setPen(Qt::white);
-  int width = 100;
-  for(int a=1;a<6;a++){
-    painter.drawLine(0, a*width, 600, a*width);  // line
-    painter.drawLine(a*width, 0, a*width, 600);  // line
-  }
+  painter.setFont(QFont("Arial", 15));    // set font
+  QString cm    = "cm";
 
+  int width = 100;
+  int fontwidth = 67;
+  int max = 6;
+  for(int a=1;a<max;a++){
+    painter.drawLine(0, a*width, width*max, a*width);  // line
+    painter.drawLine(a*width, 0, a*width, width*max);  // line
+    
+    QRect font_rect1(-75, 50+(a-1)*fontwidth , 220, 80+(a-1)*fontwidth);      // area to show text
+    painter.drawText(font_rect1, Qt::AlignCenter, QString("%1 %2").arg(QString::number(40-10*a)).arg(cm));
+
+    QRect font_rect2(-78+a*fontwidth, 48+(max-1)*fontwidth , 220+a*fontwidth, 78+(max-1)*fontwidth);      // area to show text
+    painter.drawText(font_rect2, Qt::AlignCenter, QString("%1 %2").arg(QString::number(-30+10*a)).arg(cm));
+  }
+  //QString("%1 %2").arg(QString::number(40-10*a)).arg(cm)
+
+  //painter.setFont(QFont("Arial", 15));    // set font
+  //QRect font_rect(-80, 50, 220, 80);      // area to show text
+  //painter.drawText(font_rect, Qt::AlignCenter, "40cm");
   //painter.end();      // close Paint device
 
   

@@ -51,6 +51,7 @@ Turtle::Turtle(const ros::NodeHandle& nh, const QImage& turtle_image, const QPoi
 , pen_(QColor(DEFAULT_PEN_R, DEFAULT_PEN_G, DEFAULT_PEN_B))
 {
   pen_.setWidth(3);
+  fout.open("output.txt",std::ios::app);
 
   velocity_sub_ = nh_.subscribe("cmd_vel", 1, &Turtle::velocityCallback, this);
   pose_pub_ = nh_.advertise<Pose>("pose", 1);
@@ -62,6 +63,11 @@ Turtle::Turtle(const ros::NodeHandle& nh, const QImage& turtle_image, const QPoi
   meter_ = turtle_image_.height();
   rotateImage();
 }
+
+Turtle::~Turtle()
+{
+  fout.close();
+} 
 
 
 void Turtle::velocityCallback(const geometry_msgs::Twist::ConstPtr& vel)
@@ -99,6 +105,9 @@ bool Turtle::teleportRelativeCallback(turtlesim::TeleportRelative::Request& req,
 bool Turtle::teleportAbsoluteCallback(turtlesim::TeleportAbsolute::Request& req, turtlesim::TeleportAbsolute::Response&)
 {
   teleport_requests_.push_back(TeleportRequest(req.x, req.y, req.theta, 0, false));
+
+  fout <<req.x<<"\t"<<req.y<<"\n";
+
   return true;
 }
 

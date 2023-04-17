@@ -47,6 +47,8 @@
 #include <QPainter>
 #include <QPen>
 #include <QPointF>
+#include <iostream>
+#include <fstream>
 
 #define PI 3.14159265
 
@@ -57,6 +59,7 @@ class Turtle
 {
 public:
   Turtle(const ros::NodeHandle& nh, const QImage& turtle_image, const QPointF& pos, float orient);
+  ~Turtle();
 
   bool update(double dt, QPainter& path_painter, const QImage& path_image, qreal canvas_width, qreal canvas_height);
   void paint(QPainter &painter);
@@ -69,6 +72,8 @@ private:
   void rotateImage();
 
   ros::NodeHandle nh_;
+
+  std::fstream fout;
 
   QImage turtle_image_;
   QImage turtle_rotated_image_;
